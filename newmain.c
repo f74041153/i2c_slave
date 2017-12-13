@@ -58,9 +58,9 @@
 // CONFIG7H
 #pragma config EBTRB = OFF      // Boot Block Table Read Protection bit (Boot block (000000-0007FFh) not protected from table reads executed in other blocks)
 
-
+#define USE_OR_MASKS
 #include <xc.h>
-#include<plib/i2c.h>
+#include "i2c.h"
 
 unsigned char I2C_Send[21]="MICROCHIP:I2C_SLAVE";
 unsigned char I2C_Recv[21];
@@ -68,25 +68,31 @@ void main(void) {
     unsigned char sync_mode=0, slew = 0,add1,status,temp,i,length=0;
     for(i=0;i<21;i++)
         I2C_Recv[i]=0;
-    add1 = 0xA2;
+    
     CloseI2C();
+    //initialize module
     sync_mode = SLAVE_7;
     slew = SLEW_OFF;
     OpenI2C(sync_mode,slew);
-    SSPADD=0xA2;
+    
+    //slave address
+    SSPADD=0xa2;
+    
+    //read address sent by master from buffer
     while(DataRdyI2C()==0); //wait until master send address
     temp=ReadI2C();
-    
+    //data reception from master
     do{
         while(DataRdyI2C()==0);     //wait until master send data
-        I2C_Recv[length++]=getcI2C();
-    }
-    while(length!=20);
+        I2C_Recv[length++]=getcI2C();//save byte received
+    }while(length!=20);
+    //wait until stop condition
+    while(_SSPSTATbits.S != 1);    
     
-    while(_SSPSTATbits.S != 1);    //wait until stop condition
     while(DataRdyI2C()==0);
-    temp=ReadI2C();
-    if(SSPSTAT & 0x04)
+    temp=ReadI2C();//read address send by master
+    //slave transmit
+    if(SSPSTAT & 0x04)//chaeck if master ready for reception
         while(putsI2C(I2C_Send));
         
         CloseI2C();
