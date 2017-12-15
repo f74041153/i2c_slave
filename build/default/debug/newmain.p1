@@ -3513,7 +3513,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic18.h: 164: extern __nonreentrant void _delay(unsigned long);
 [; ;pic18.h: 166: extern __nonreentrant void _delaywdt(unsigned long);
 [; ;pic18.h: 168: extern __nonreentrant void _delay3(unsigned char);
-"65 newmain.c
+"66 newmain.c
 [v _I2C_Send `uc ~T0 @X0 -> 21 `i e ]
 [i _I2C_Send
 :U ..
@@ -3539,130 +3539,136 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 0 `c
 ..
 ]
-[; ;newmain.c: 65: unsigned char I2C_Send[21]="MICROCHIP:I2C_SLAVE";
-"66
-[v _I2C_Recv `uc ~T0 @X0 -> 21 `i e ]
-[; ;newmain.c: 66: unsigned char I2C_Recv[21];
-[v $root$_main `(v ~T0 @X0 0 e ]
+[; ;newmain.c: 66: unsigned char I2C_Send[21]="MICROCHIP:I2C_SLAVE";
 "67
+[v _I2C_Recv `uc ~T0 @X0 -> 21 `i e ]
+[; ;newmain.c: 67: unsigned char I2C_Recv[21];
+[v $root$_main `(v ~T0 @X0 0 e ]
+"68
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;newmain.c: 67: void main(void) {
+[; ;newmain.c: 68: void main(void) {
 [e :U _main ]
 [f ]
-"68
+"69
 [v _sync_mode `uc ~T0 @X0 1 a ]
-[; ;newmain.c: 68: unsigned char sync_mode=0, slew = 0,add1,status,temp,i,length=0;
+[; ;newmain.c: 69: unsigned char sync_mode=0, slew = 0,data=0,add1=0,status=0,temp=0,i=0,length=0;
 [e = _sync_mode -> -> 0 `i `uc ]
 [v _slew `uc ~T0 @X0 1 a ]
 [e = _slew -> -> 0 `i `uc ]
+[v _data `uc ~T0 @X0 1 a ]
+[e = _data -> -> 0 `i `uc ]
 [v _add1 `uc ~T0 @X0 1 a ]
+[e = _add1 -> -> 0 `i `uc ]
 [v _status `uc ~T0 @X0 1 a ]
+[e = _status -> -> 0 `i `uc ]
 [v _temp `uc ~T0 @X0 1 a ]
+[e = _temp -> -> 0 `i `uc ]
 [v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
 [v _length `uc ~T0 @X0 1 a ]
 [e = _length -> -> 0 `i `uc ]
-[; ;newmain.c: 69: for(i=0;i<21;i++)
-"69
+[; ;newmain.c: 70: for(i=0;i<21;i++)
+"70
 {
 [e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i -> 21 `i 312  ]
 [e $U 313  ]
-"70
+"71
 [e :U 312 ]
-[; ;newmain.c: 70: I2C_Recv[i]=0;
+[; ;newmain.c: 71: I2C_Recv[i]=0;
 [e = *U + &U _I2C_Recv * -> _i `ux -> -> # *U &U _I2C_Recv `ui `ux -> -> 0 `i `uc ]
-"69
+"70
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i -> 21 `i 312  ]
 [e :U 313 ]
-"70
+"71
 }
-[; ;newmain.c: 72: SSPCON1 &=0xDF;
-"72
+[; ;newmain.c: 73: SSPCON1 &=0xDF;
+"73
 [e =& _SSPCON1 -> -> 223 `i `uc ]
-[; ;newmain.c: 74: sync_mode = 0b00000110;
-"74
-[e = _sync_mode -> -> 6 `i `uc ]
-[; ;newmain.c: 75: slew = 0b10000000;
+[; ;newmain.c: 75: sync_mode = 0b00000110;
 "75
-[e = _slew -> -> 128 `i `uc ]
-[; ;newmain.c: 76: OpenI2C(sync_mode,slew);
+[e = _sync_mode -> -> 6 `i `uc ]
+[; ;newmain.c: 76: slew = 0b10000000;
 "76
+[e = _slew -> -> 128 `i `uc ]
+[; ;newmain.c: 77: OpenI2C(sync_mode,slew);
+"77
 [e ( _OpenI2C (2 , _sync_mode _slew ]
-[; ;newmain.c: 79: SSPADD=0xa2;
-"79
-[e = _SSPADD -> -> 162 `i `uc ]
-[; ;newmain.c: 82: while((_SSPSTATbits.BF)==0);
-"82
+[; ;newmain.c: 81: SSPADD=0xA5;
+"81
+[e = _SSPADD -> -> 165 `i `uc ]
+[; ;newmain.c: 84: while((_SSPSTATbits.BF)==0);
+"84
 [e $U 315  ]
 [e :U 316 ]
 [e :U 315 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 316  ]
 [e :U 317 ]
-[; ;newmain.c: 83: temp=ReadI2C();
-"83
-[e = _temp ( _ReadI2C ..  ]
-[; ;newmain.c: 85: do{
+[; ;newmain.c: 85: temp=ReadI2C();
 "85
+[e = _temp ( _ReadI2C ..  ]
+[; ;newmain.c: 87: do{
+"87
 [e :U 320 ]
 {
-[; ;newmain.c: 86: while((_SSPSTATbits.BF)==0);
-"86
+[; ;newmain.c: 88: while((_SSPSTATbits.BF)==0);
+"88
 [e $U 321  ]
 [e :U 322 ]
 [e :U 321 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 322  ]
 [e :U 323 ]
-[; ;newmain.c: 87: I2C_Recv[length++]=ReadI2C();
-"87
+[; ;newmain.c: 89: I2C_Recv[length++]=ReadI2C();
+"89
 [e = *U + &U _I2C_Recv * -> ++ _length -> -> 1 `i `uc `ux -> -> # *U &U _I2C_Recv `ui `ux ( _ReadI2C ..  ]
-"88
+"90
 }
-[; ;newmain.c: 88: }while(length!=20);
+[; ;newmain.c: 90: }while(length!=20);
 [e $ != -> _length `i -> 20 `i 320  ]
 [e :U 319 ]
-[; ;newmain.c: 90: while(_SSPSTATbits.S != 1);
-"90
+[; ;newmain.c: 92: while(_SSPSTATbits.S != 1);
+"92
 [e $U 324  ]
 [e :U 325 ]
 [e :U 324 ]
 [e $ != -> . . __SSPSTATbits 2 3 `i -> 1 `i 325  ]
 [e :U 326 ]
-[; ;newmain.c: 92: while((_SSPSTATbits.BF)==0);
-"92
+[; ;newmain.c: 94: while((_SSPSTATbits.BF)==0);
+"94
 [e $U 327  ]
 [e :U 328 ]
 [e :U 327 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 328  ]
 [e :U 329 ]
-[; ;newmain.c: 93: temp=ReadI2C();
-"93
-[e = _temp ( _ReadI2C ..  ]
-[; ;newmain.c: 95: if(SSPSTAT & 0x04)
+[; ;newmain.c: 95: temp=ReadI2C();
 "95
+[e = _temp ( _ReadI2C ..  ]
+[; ;newmain.c: 97: if(SSPSTAT & 0x04)
+"97
 [e $ ! != & -> _SSPSTAT `i -> 4 `i -> 0 `i 330  ]
-[; ;newmain.c: 96: while(putsI2C(I2C_Send));
-"96
+[; ;newmain.c: 98: while(putsI2C(I2C_Send));
+"98
 [e $U 331  ]
 [e :U 332 ]
 [e :U 331 ]
 [e $ != -> ( _putsI2C (1 &U _I2C_Send `i -> -> -> 0 `i `c `i 332  ]
 [e :U 333 ]
 [e :U 330 ]
-[; ;newmain.c: 98: SSPCON1 &=0xDF;
-"98
+[; ;newmain.c: 100: SSPCON1 &=0xDF;
+"100
 [e =& _SSPCON1 -> -> 223 `i `uc ]
-[; ;newmain.c: 99: while(1);
-"99
+[; ;newmain.c: 101: while(1);
+"101
 [e :U 335 ]
 [e :U 334 ]
 [e $U 335  ]
 [e :U 336 ]
-[; ;newmain.c: 101: return;
-"101
+[; ;newmain.c: 103: return;
+"103
 [e $UE 311  ]
-[; ;newmain.c: 102: }
-"102
+[; ;newmain.c: 104: }
+"104
 [e :UE 311 ]
 }

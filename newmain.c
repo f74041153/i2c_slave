@@ -61,11 +61,12 @@
 #define USE_OR_MASKS
 #include <xc.h>
 #include "i2c.h"
+#include <pic18f4520.h>
 
 unsigned char I2C_Send[21]="MICROCHIP:I2C_SLAVE";
 unsigned char I2C_Recv[21];
 void main(void) {
-    unsigned char sync_mode=0, slew = 0,add1,status,temp,i,length=0;
+    unsigned char sync_mode=0, slew = 0,data=0,add1=0,status=0,temp=0,i=0,length=0;
     for(i=0;i<21;i++)
         I2C_Recv[i]=0;
     
@@ -75,8 +76,9 @@ void main(void) {
     slew = SLEW_OFF;
     OpenI2C(sync_mode,slew);
     
+    //data = SSPBUF;
     //slave address
-    SSPADD=0xa2;
+    SSPADD=0xA5;
     
     //read address sent by master from buffer
     while(DataRdyI2C()==0); //wait until master send address

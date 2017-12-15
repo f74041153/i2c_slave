@@ -3552,14 +3552,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 "68
 [v _sync_mode `uc ~T0 @X0 1 a ]
-[; ;newmain.c: 68: unsigned char sync_mode=0, slew = 0,add1,status,temp,i,length=0;
+[; ;newmain.c: 68: unsigned char sync_mode=0, slew = 0,data=0,add1=0,status=0,temp=0,i=0,length=0;
 [e = _sync_mode -> -> 0 `i `uc ]
 [v _slew `uc ~T0 @X0 1 a ]
 [e = _slew -> -> 0 `i `uc ]
+[v _data `uc ~T0 @X0 1 a ]
+[e = _data -> -> 0 `i `uc ]
 [v _add1 `uc ~T0 @X0 1 a ]
+[e = _add1 -> -> 0 `i `uc ]
 [v _status `uc ~T0 @X0 1 a ]
+[e = _status -> -> 0 `i `uc ]
 [v _temp `uc ~T0 @X0 1 a ]
+[e = _temp -> -> 0 `i `uc ]
 [v _i `uc ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `uc ]
 [v _length `uc ~T0 @X0 1 a ]
 [e = _length -> -> 0 `i `uc ]
 [; ;newmain.c: 69: for(i=0;i<21;i++)
@@ -3590,79 +3596,79 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;newmain.c: 76: OpenI2C(sync_mode,slew);
 "76
 [e ( _OpenI2C (2 , _sync_mode _slew ]
-[; ;newmain.c: 79: SSPADD=0xa2;
-"79
+[; ;newmain.c: 80: SSPADD=0xa2;
+"80
 [e = _SSPADD -> -> 162 `i `uc ]
-[; ;newmain.c: 82: while((_SSPSTATbits.BF)==0);
-"82
+[; ;newmain.c: 83: while((_SSPSTATbits.BF)==0);
+"83
 [e $U 315  ]
 [e :U 316 ]
 [e :U 315 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 316  ]
 [e :U 317 ]
-[; ;newmain.c: 83: temp=ReadI2C();
-"83
+[; ;newmain.c: 84: temp=ReadI2C();
+"84
 [e = _temp ( _ReadI2C ..  ]
-[; ;newmain.c: 85: do{
-"85
+[; ;newmain.c: 86: do{
+"86
 [e :U 320 ]
 {
-[; ;newmain.c: 86: while((_SSPSTATbits.BF)==0);
-"86
+[; ;newmain.c: 87: while((_SSPSTATbits.BF)==0);
+"87
 [e $U 321  ]
 [e :U 322 ]
 [e :U 321 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 322  ]
 [e :U 323 ]
-[; ;newmain.c: 87: I2C_Recv[length++]=ReadI2C();
-"87
-[e = *U + &U _I2C_Recv * -> ++ _length -> -> 1 `i `uc `ux -> -> # *U &U _I2C_Recv `ui `ux ( _ReadI2C ..  ]
+[; ;newmain.c: 88: I2C_Recv[length++]=ReadI2C();
 "88
+[e = *U + &U _I2C_Recv * -> ++ _length -> -> 1 `i `uc `ux -> -> # *U &U _I2C_Recv `ui `ux ( _ReadI2C ..  ]
+"89
 }
-[; ;newmain.c: 88: }while(length!=20);
+[; ;newmain.c: 89: }while(length!=20);
 [e $ != -> _length `i -> 20 `i 320  ]
 [e :U 319 ]
-[; ;newmain.c: 90: while(_SSPSTATbits.S != 1);
-"90
+[; ;newmain.c: 91: while(_SSPSTATbits.S != 1);
+"91
 [e $U 324  ]
 [e :U 325 ]
 [e :U 324 ]
 [e $ != -> . . __SSPSTATbits 2 3 `i -> 1 `i 325  ]
 [e :U 326 ]
-[; ;newmain.c: 92: while((_SSPSTATbits.BF)==0);
-"92
+[; ;newmain.c: 93: while((_SSPSTATbits.BF)==0);
+"93
 [e $U 327  ]
 [e :U 328 ]
 [e :U 327 ]
 [e $ == -> . . __SSPSTATbits 2 0 `i -> 0 `i 328  ]
 [e :U 329 ]
-[; ;newmain.c: 93: temp=ReadI2C();
-"93
+[; ;newmain.c: 94: temp=ReadI2C();
+"94
 [e = _temp ( _ReadI2C ..  ]
-[; ;newmain.c: 95: if(SSPSTAT & 0x04)
-"95
-[e $ ! != & -> _SSPSTAT `i -> 4 `i -> 0 `i 330  ]
-[; ;newmain.c: 96: while(putsI2C(I2C_Send));
+[; ;newmain.c: 96: if(SSPSTAT & 0x04)
 "96
+[e $ ! != & -> _SSPSTAT `i -> 4 `i -> 0 `i 330  ]
+[; ;newmain.c: 97: while(putsI2C(I2C_Send));
+"97
 [e $U 331  ]
 [e :U 332 ]
 [e :U 331 ]
 [e $ != -> ( _putsI2C (1 &U _I2C_Send `i -> -> -> 0 `i `c `i 332  ]
 [e :U 333 ]
 [e :U 330 ]
-[; ;newmain.c: 98: SSPCON1 &=0xDF;
-"98
-[e =& _SSPCON1 -> -> 223 `i `uc ]
-[; ;newmain.c: 99: while(1);
+[; ;newmain.c: 99: SSPCON1 &=0xDF;
 "99
+[e =& _SSPCON1 -> -> 223 `i `uc ]
+[; ;newmain.c: 100: while(1);
+"100
 [e :U 335 ]
 [e :U 334 ]
 [e $U 335  ]
 [e :U 336 ]
-[; ;newmain.c: 101: return;
-"101
-[e $UE 311  ]
-[; ;newmain.c: 102: }
+[; ;newmain.c: 102: return;
 "102
+[e $UE 311  ]
+[; ;newmain.c: 103: }
+"103
 [e :UE 311 ]
 }
